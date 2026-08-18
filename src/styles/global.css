@@ -4,7 +4,7 @@ body {
 .my-container {
 	display: flex;
 }
-.my-container > * {
+.my-container > *, .my-string {
   border: 1px solid #5A322A;
   border-radius: 5px;
   padding: .5em;

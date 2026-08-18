@@ -1,0 +1,80 @@
+---
+// frontmatter: optional props, logic (runs server-side/build-time)
+const { length = 100 } = Astro.props;
+---
+
+<div class="my-guitar-string" style={`--length: ${length}px`}>
+</div>
+
+<style>
+.my-guitar-string {
+  width: 300px;
+  height: 2px;
+  background-color: #5A322A;
+  cursor: pointer;
+}
+
+/* This class gets added by JavaScript on click */
+.vibrate {
+  animation: pluck 0.6s ease-out; /* Removed 'infinite' and shortened time */
+}
+
+@keyframes pluck {
+  0%   { transform: scaleY(1); }
+  10%  { transform: scaleY(4); }
+  20%  { transform: scaleY(-2.6); }
+  30%  { transform: scaleY(1.69); }
+  40%  { transform: scaleY(-1.1); }
+  50%  { transform: scaleY(1); }
+  60%  { transform: scaleY(-1); }
+  70%  { transform: scaleY(1); }
+  80%  { transform: scaleY(-0.2); }
+  90%  { transform: scaleY(1); }
+  100% { transform: scaleY(1); }
+}
+</style>
+
+<script>
+function pluckString(element) {
+  // Remove the class if it's already there (avoids collision)
+  element.classList.remove('vibrate');
+
+  // Trigger a reflow to reset the animation state in the browser
+  void element.offsetWidth;
+
+  // Add the class to start the vibration
+  element.classList.add('vibrate');
+
+  playPluckSound(880);
+}
+document.querySelectorAll('.my-guitar-string').forEach(el => {
+  el.addEventListener('click', () => pluckString(el));
+});
+
+function playPluckSound(baseFreq = 440, duration = 1) {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const now = ctx.currentTime;
+
+  const masterGain = ctx.createGain();
+  masterGain.gain.setValueAtTime(0.0001, now);
+  masterGain.gain.exponentialRampToValueAtTime(0.3, now + 0.01); // quick attack, avoids a click
+  masterGain.gain.exponentialRampToValueAtTime(0.0001, now + duration); // fade out
+  masterGain.connect(ctx.destination);
+
+  const harmonics = 7; // fundamental + 6 overtones
+  for (let n = 1; n <= harmonics; n++) {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = baseFreq * n;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 1 / n; // each overtone quieter than the last
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+
+    osc.start(now);
+    osc.stop(now + duration);
+  }
+}
+</script>
