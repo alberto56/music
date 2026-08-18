@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageNav from '../components/PageNav.astro';
+---
+
+<Layout>
+	<main>
+		<h1>Page 2</h1>
+		<p>This is page 2.</p>
+		<PageNav previous={{ href: '../page-1/', label: 'Page 1' }} next={{ href: '../page-3/', label: 'Page 3' }} />
+	</main>
+</Layout>

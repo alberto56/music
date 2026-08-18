@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const pages = [
+	{ href: 'page-1/', label: 'Page 1' },
+	{ href: 'page-2/', label: 'Page 2' },
+	{ href: 'page-3/', label: 'Page 3' },
+];
 ---
 
 <Layout>
-	<Welcome />
+	<main>
+		<h1>My Pages</h1>
+		<ul>
+			{
+				pages.map((page) => (
+					<li>
+						<a href={page.href}>{page.label}</a>
+					</li>
+				))
+			}
+		</ul>
+	</main>
 </Layout>
