@@ -1,0 +1,20 @@
+---
+page: 2
+title: "1. The longer the string, the lower the pitch"
+---
+
+import StringVisual from '../../components/StringVisual.astro';
+import StringVisualV2 from '../../components/StringVisualV2.astro';
+
+The longer the string, the lower the pitch.
+
+Compare these two strings:
+
+<StringVisualV2 />
+<StringVisual length={200} hz={440} />
+<StringVisual length={100} hz={880} />
+<StringVisual length={400} hz={220} />
+
+A string half the size will create the same note an octave higher.
+
+A string double the size will create the same note an octave lower.

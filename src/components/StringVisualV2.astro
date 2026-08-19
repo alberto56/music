@@ -1,0 +1,38 @@
+---
+// Displays a model of a string.
+//
+const {
+  // We need a
+  display_model = 'v1/pixels/500',
+  string_description = 'v1/desc/a4-acoustic-guitar',
+  controller = 'v1',
+  sound_model = 'v1',
+} = Astro.props;
+---
+
+<div
+  class="my-string-v2"
+  data-display-model={display_model}
+  data-description={string_description}
+  data-controller={controller}
+  data-sound-model={sound_model}
+>
+</div>
+
+<script>
+  import MyDOMElement from '../scripts/dom/MyDOMElement.js';
+  import MyStringDisplay
+    from '../scripts/components/MyStringDisplay.js';
+  import MyStringSound
+    from '../scripts/components/MyStringSound.js';
+  import MyStringClick
+    from '../scripts/components/MyStringClick.js';
+  import MyStringCalc
+    from '../scripts/components/MyStringCalc.js';
+
+  const elem = new MyDOMElement(document.querySelector('.my-string-v2'))
+    .addComponent(new MyStringDisplay())
+    .addComponent(new MyStringSound())
+    .addComponent(new MyStringClick())
+    .addComponent(new MyStringCalc());
+</script>

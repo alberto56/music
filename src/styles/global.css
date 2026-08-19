@@ -24,3 +24,37 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.my-guitar-string {
+  height: 30px;
+  width: 100%;
+
+  /* clip-path: shape(
+    from 0% 45%,
+    curve to 100% 45% with 50% 100%,
+    line to 100% 55%,
+    curve to 0% 55% with 50% 110%,
+    close
+  ); */
+  clip-path: shape(
+    from 0% 45%,
+    curve to 100% 45% with 50% 45%,
+    line to 100% 55%,
+    curve to 0% 55% with 50% 55%,
+    close
+  );
+
+  background: black;
+}
+@keyframes pluck {
+  0%   { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 100%, line to 100% 55%, curve to 0% 55% with 50% 110%, close); }
+  10%  { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% -40%, line to 100% 55%, curve to 0% 55% with 50% -30%, close); }
+  25%  { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 130%, line to 100% 55%, curve to 0% 55% with 50% 140%, close); }
+  40%  { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 20%, line to 100% 55%, curve to 0% 55% with 50% 30%, close); }
+  55%  { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 110%, line to 100% 55%, curve to 0% 55% with 50% 120%, close); }
+  70%  { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 70%, line to 100% 55%, curve to 0% 55% with 50% 80%, close); }
+  100% { clip-path: shape(from 0% 45%, curve to 100% 45% with 50% 100%, line to 100% 55%, curve to 0% 55% with 50% 110%, close); }
+}
+
+.vibrate {
+  animation: pluck 0.8s ease-out;
+}
