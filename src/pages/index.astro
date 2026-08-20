@@ -3,12 +3,26 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const base = import.meta.env.BASE_URL;
-const pages = (await getCollection('pages')).sort((a, b) => a.data.page - b.data.page);
+const cards = (await getCollection('cards'))
+	.sort((a, b) => a.data.order - b.data.order);
+const pages = (await getCollection('pages'))
+	.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout>
 	<main>
-		<h1>Notes About Music</h1>
+		<h1>Notes on Music</h1>
+		<div class="my-container">
+			{
+				cards.map((page) => (
+					<div>
+						<a href={`${base}${page.id}/`}>{page.data.title}</a>
+					</div>
+				))
+			}
+		</div>
+	</main>
+	<footer>BLA
 		<div class="my-container">
 			{
 				pages.map((page) => (
@@ -18,5 +32,5 @@ const pages = (await getCollection('pages')).sort((a, b) => a.data.page - b.data
 				))
 			}
 		</div>
-	</main>
+	</footer>
 </Layout>

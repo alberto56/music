@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import PageNav from '../components/PageNav.astro';
 
 export async function getStaticPaths() {
-	const entries = await getCollection('pages');
+	const entries = [...(await getCollection('pages')), ...(await getCollection('cards'))];
 	const sorted = [...entries].sort((a, b) => a.data.page - b.data.page);
 
 	return entries.map((entry) => ({

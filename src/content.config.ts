@@ -9,4 +9,12 @@ const pages = defineCollection({
 	}),
 });
 
-export const collections = { pages };
+const cards = defineCollection({
+	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/cards' }),
+	schema: z.object({
+		page: z.number(),
+		title: z.string(),
+	}),
+});
+
+export const collections = { pages, cards };
