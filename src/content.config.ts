@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 const pages = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
 	schema: z.object({
-		page: z.number(),
+		order: z.number(),
 		title: z.string(),
 	}),
 });
@@ -12,7 +12,7 @@ const pages = defineCollection({
 const cards = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/cards' }),
 	schema: z.object({
-		page: z.number(),
+		order: z.number(),
 		title: z.string(),
 	}),
 });

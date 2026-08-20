@@ -22,15 +22,15 @@ const pages = (await getCollection('pages'))
 			}
 		</div>
 	</main>
-	<footer>BLA
-		<div class="my-container">
+	<footer>
+		<ul>
 			{
 				pages.map((page) => (
-					<div>
+					<li>
 						<a href={`${base}${page.id}/`}>{page.data.title}</a>
-					</div>
+					</li>
 				))
 			}
-		</div>
+		</ul>
 	</footer>
 </Layout>

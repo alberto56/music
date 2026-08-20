@@ -1,6 +1,6 @@
 ---
 order: 0
-title: "About the Music Concepts website"
+title: "About the Notes on Music website"
 ---
 
 This website is designed to provide bite-sized snippets of information on interactive pages, on certain concepts of musical theory. The author *is not a musician* but I find it easier to learn stuff if I make a website about it.
