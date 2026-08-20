@@ -23,7 +23,7 @@ class GuitarString {
     masterGain.gain.exponentialRampToValueAtTime(0.0001, now + duration); // fade out
     masterGain.connect(ctx.destination);
 
-    const harmonics = 7; // fundamental + 6 overtones
+    const harmonics = 8; // fundamental + 6 overtones
     for (let n = 1; n <= harmonics; n++) {
       const osc = ctx.createOscillator();
       osc.type = 'sine';

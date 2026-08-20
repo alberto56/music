@@ -5,8 +5,7 @@ class MyStringCalc extends MyComponent {
     const desc = this.get('data-description', "v1/desc/a4-acoustic-guitar");
 
     this.processFromVariables({
-      f: 110.0,
-      L: 0.648,
+      L: 0.648 * this.get('data-string-length', '1'),
       T: 101.62,
       u: 0.005,
     });

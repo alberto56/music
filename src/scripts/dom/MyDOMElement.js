@@ -19,7 +19,12 @@ class MyDOMElement {
     if (!this._components) {
       this._components = [];
     }
-    this._components.push(component.init(this).process());
+    const candidate = component.init(this).process();
+    if (candidate !== component) {
+      console.log(component);
+      throw new Error('MyDOMElement: addComponent() expects process() to return the same component instance ');
+    }
+    this._components.push(candidate);
     return this;
   }
   components() {

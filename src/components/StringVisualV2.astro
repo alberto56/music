@@ -3,20 +3,24 @@
 //
 const {
   // We need a
-  display_model = 'v1/pixels/500',
+  display_model = 'v1/percent/100',
   string_description = 'v1/desc/a4-acoustic-guitar',
   controller = 'v1',
   sound_model = 'v1',
+  string_length = '1',
 } = Astro.props;
 ---
 
-<div
-  class="my-string-v2"
-  data-display-model={display_model}
-  data-description={string_description}
-  data-controller={controller}
-  data-sound-model={sound_model}
->
+<div class="my-string-v2-wrapper">
+  <div
+    class="my-string-v2"
+    data-display-model={display_model}
+    data-description={string_description}
+    data-controller={controller}
+    data-sound-model={sound_model}
+    data-string-length={string_length}
+  >
+  </div>
 </div>
 
 <script>
@@ -30,9 +34,19 @@ const {
   import MyStringCalc
     from '../scripts/components/MyStringCalc.js';
 
-  const elem = new MyDOMElement(document.querySelector('.my-string-v2'))
-    .addComponent(new MyStringDisplay())
-    .addComponent(new MyStringSound())
-    .addComponent(new MyStringClick())
-    .addComponent(new MyStringCalc());
+  document.querySelectorAll('.my-string-v2').forEach((element) => {
+    if (element.dataset.initialized) {
+      return;
+    }
+
+    element.dataset.initialized = 'true';
+
+    console.log('About to fetch ' + element.dataset.description);
+
+    new MyDOMElement(element)
+      .addComponent(new MyStringDisplay())
+      .addComponent(new MyStringSound())
+      .addComponent(new MyStringClick())
+      .addComponent(new MyStringCalc());
+  });
 </script>

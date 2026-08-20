@@ -1,5 +1,5 @@
 ---
-page: 2
+page: 5
 title: Page Two
 ---
 This is page 2.
