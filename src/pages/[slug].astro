@@ -1,25 +1,30 @@
 ---
 import { getCollection, render } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
+import PagesLayout from '../layouts/Layout.astro';
+import CardLayout from '../layouts/CardLayout.astro';
 import PageNav from '../components/PageNav.astro';
 
 export async function getStaticPaths() {
-	const entries = [...(await getCollection('pages')), ...(await getCollection('cards'))];
-	const sorted = [...entries].sort((a, b) => a.data.page - b.data.page);
+	const pages = (await getCollection('pages')).sort((a, b) => a.data.order - b.data.order);
+	const cards = (await getCollection('cards')).sort((a, b) => a.data.order - b.data.order);
 
-	return entries.map((entry) => ({
-		params: { slug: entry.id },
-		props: {
-			entry,
-			previous: sorted.filter((e) => e.data.page < entry.data.page).at(-1),
-			next: sorted.find((e) => e.data.page > entry.data.page),
-		},
-	}));
+	return [...pages, ...cards].map((entry) => {
+		const sorted = entry.collection === 'cards' ? cards : pages;
+		return {
+			params: { slug: entry.id },
+			props: {
+				entry,
+				previous: sorted.filter((e) => e.data.order < entry.data.order).at(-1),
+				next: sorted.find((e) => e.data.order > entry.data.order),
+			},
+		};
+	});
 }
 
 const { entry, previous, next } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL;
+const Layout = entry.collection === 'cards' ? CardLayout : PagesLayout;
 ---
 
 <Layout>

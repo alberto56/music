@@ -13,7 +13,7 @@ import '../styles/global.css';
 		<title>Astro Basics</title>
 	</head>
 	<body>
-		<div class="my-internal">
+		<div class="my-card-internal">
 			<slot />
 		</div>
 	</body>
@@ -26,17 +26,20 @@ import '../styles/global.css';
 		padding: 0;
 		width: 100%;
 		min-height: 100%;
-		background: #BAC8B1;
-		color: #5A322A;
 	}
-	.my-internal {
+	.my-card-internal {
 		max-width: 40rem;
 		margin: 0 auto;
 		padding: 2rem;
 		min-height: 100vh;
+		background: #5A322A;
+		color: #BAC8B1;
+	}
+	.my-card-internal :global(a) {
+		color: #BAC8B1;
 	}
 	@media (min-width: 768px) {
-		.my-internal {
+		.my-card-internal {
 			padding: 3rem 2rem;
 		}
 	}
