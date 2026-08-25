@@ -15,9 +15,7 @@ const pages = (await getCollection('pages'))
 		<div class="my-container">
 			{
 				cards.map((page) => (
-					<div>
-						<a href={`${base}${page.id}/`}>{page.data.title}</a>
-					</div>
+					<a href={`${base}${page.id}/`}>{page.data.title}</a>
 				))
 			}
 		</div>
