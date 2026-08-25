@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "broken-links": "./scripts/broken-links.sh",
-    "test:e2e": "./scripts/end-to-end-tests.sh"
+    "test:e2e": "./scripts/end-to-end-tests.sh",
+    "validate-html": "./scripts/validate-html.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
+    "html-validate": "^11.10.0",
     "linkinator": "^8.0.4"
   }
 }
