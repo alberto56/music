@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const components = await getCollection('components');
+
+  return components.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href={base}>Home</a> &gt; <a href={`${base}components/`}>Components</a> &gt;
+  </nav>
+  <h1>{entry.data.title}</h1>
+  <Content />
+</Layout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+</style>
