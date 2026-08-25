@@ -120,4 +120,7 @@ a:hover {
 pre {
   padding: 40px;
   border-radius: 13px;
+  background: black;
+  color: #4AFF00;
+  font-weight: bold;
 }
