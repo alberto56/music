@@ -23,6 +23,10 @@ See the contents of the ./src/content/pages directory for all documentation.
 * light: #bac8b1
 * dark: #5a322a
 
+## Emoji used for the logo
+
+♪
+
 ## favicon
 
 Generated with https://favicon.io/favicon-generator/ to generate the favicons, and https://realfavicongenerator.net to generate the light and dark packages.
