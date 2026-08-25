@@ -41,18 +41,18 @@ These are IDEAS and general unstructured notes and code, not ready for consumpti
 // [5] https://en.wikipedia.org/wiki/Mersenne%27s_laws
 <div class="my-guitar-string-container">
 <div
-	class="my-guitar-string-wrapper"
-	style={`--length: ${length}px`}
-	data-reference-length={length}
-	data-reference-freq={hz}
+  class="my-guitar-string-wrapper"
+  style={`--length: ${length}px`}
+  data-reference-length={length}
+  data-reference-freq={hz}
 >
-	<div class="my-guitar-string"></div>
-	<div class="string-end string-end-left"></div>
-	<div class="string-end string-end-right"></div>
-	<span class="freq-label">{hz}Hz</span>
-	<span class="length-label">{hz}Hz</span>
-	<span class="tension-label">{hz}Hz</span>
-	<span class="freq-label">{hz}Hz</span>
+  <div class="my-guitar-string"></div>
+  <div class="string-end string-end-left"></div>
+  <div class="string-end string-end-right"></div>
+  <span class="freq-label">{hz}Hz</span>
+  <span class="length-label">{hz}Hz</span>
+  <span class="tension-label">{hz}Hz</span>
+  <span class="freq-label">{hz}Hz</span>
 </div>
 </div>
 

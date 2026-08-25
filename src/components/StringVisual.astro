@@ -5,15 +5,15 @@ const { length = 440, hz = 440 } = Astro.props;
 
 <div class="my-guitar-string-container">
 <div
-	class="my-guitar-string-wrapper"
-	style={`--length: ${length}px`}
-	data-reference-length={length}
-	data-reference-freq={hz}
+  class="my-guitar-string-wrapper"
+  style={`--length: ${length}px`}
+  data-reference-length={length}
+  data-reference-freq={hz}
 >
-	<div class="my-guitar-string"></div>
-	<div class="string-end string-end-left"></div>
-	<div class="string-end string-end-right"></div>
-	<span class="freq-label">{hz}Hz</span>
+  <div class="my-guitar-string"></div>
+  <div class="string-end string-end-left"></div>
+  <div class="string-end string-end-right"></div>
+  <span class="freq-label">{hz}Hz</span>
 </div>
 </div>
 

@@ -7,48 +7,48 @@ import Favicon from '../components/Favicon.astro';
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
-		<link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
-		<meta name="generator" content={Astro.generator} />
-		<title>Notes on music</title>
-		<Favicon />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<div class="my-internal">
-				<slot />
-			</div>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+    <meta name="generator" content={Astro.generator} />
+    <title>Notes on music</title>
+    <Favicon />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="my-internal">
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		min-height: 100dvh; /* fallback to 100vh if dvh isn't supported */
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-		background: #BAC8B1;
-		color: #5A322A;
-	}
-	main {
-		flex-grow: 1;
-	}
-	.my-internal {
-		max-width: 40rem;
-		margin: 0 auto;
-		padding: 2rem;
-	}
-	@media (min-width: 768px) {
-		.my-internal {
-			padding: 3rem 2rem;
-		}
-	}
+  html,
+  body {
+    margin: 0;
+    min-height: 100dvh; /* fallback to 100vh if dvh isn't supported */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #BAC8B1;
+    color: #5A322A;
+  }
+  main {
+    flex-grow: 1;
+  }
+  .my-internal {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  @media (min-width: 768px) {
+    .my-internal {
+      padding: 3rem 2rem;
+    }
+  }
 </style>
