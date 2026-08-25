@@ -8,4 +8,7 @@ export default defineConfig({
   site: 'https://alberto56.github.io',
   base: '/music/',
   integrations: [mdx()],
+  markdown: {
+    syntaxHighlight: 'prism',
+  },
 });

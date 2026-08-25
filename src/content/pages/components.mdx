@@ -1,0 +1,18 @@
+---
+order: 2
+title: "Components"
+---
+
+import { getCollection } from 'astro:content';
+
+export const base = import.meta.env.BASE_URL;
+export const components = (await getCollection('components'))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+<ul>
+  {components.map((page) => (
+    <li>
+      <a href={`${base}components/${page.id}/`}>{page.data.title}</a>
+    </li>
+  ))}
+</ul>
