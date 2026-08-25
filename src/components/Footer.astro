@@ -1,11 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+const base = import.meta.env.BASE_URL;
+const pages = (await getCollection('pages'))
+	.sort((a, b) => a.data.order - b.data.order);
+---
 <footer>
-BLA BLA BLA
+  <ul>
+    {
+      pages.map((page) => (
+        <li>
+          <a href={`${base}${page.id}/`}>{page.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
 </footer>
 <style>
   footer {
-      background-color: #333;
+      background-color: #5a322a;
       color: white;
       padding: 20px;
       text-align: center;
+  }
+  ul {
+      list-style-type: none;
+      padding: 0;
+  }
+  li {
+      display: inline;
+      margin: 0 10px;
+  }
+  a {
+      color: #bac8b1;
+      text-decoration: none;
   }
 </style>
