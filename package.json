@@ -12,7 +12,8 @@
     "astro": "astro",
     "broken-links": "./scripts/broken-links.sh",
     "test:e2e": "./scripts/end-to-end-tests.sh",
-    "validate-html": "./scripts/validate-html.sh"
+    "validate-html": "./scripts/validate-html.sh",
+    "no-tabs": "./scripts/no-tabs.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",

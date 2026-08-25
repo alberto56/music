@@ -1,21 +1,21 @@
 ---
 interface Props {
-	previous: { href: string; label: string };
-	next: { href: string; label: string };
+  previous: { href: string; label: string };
+  next: { href: string; label: string };
 }
 
 const { previous, next } = Astro.props;
 ---
 
 <nav class="page-nav" aria-label="Card pagination">
-	<a href={previous.href}>&larr; {previous.label}</a>
-	<a href={next.href}>{next.label} &rarr;</a>
+  <a href={previous.href}>&larr; {previous.label}</a>
+  <a href={next.href}>{next.label} &rarr;</a>
 </nav>
 
 <style>
-	.page-nav {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 2rem;
-	}
+  .page-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
 </style>

@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
 const pages = (await getCollection('pages'))
-	.sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 <footer>
   <ul>

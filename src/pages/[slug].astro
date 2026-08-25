@@ -4,17 +4,17 @@ import PagesLayout from '../layouts/Layout.astro';
 import PageNav from '../components/PageNav.astro';
 
 export async function getStaticPaths() {
-	const pages = (await getCollection('pages')).sort((a, b) => a.data.order - b.data.order);
-	const cards = (await getCollection('cards')).sort((a, b) => a.data.order - b.data.order);
+  const pages = (await getCollection('pages')).sort((a, b) => a.data.order - b.data.order);
+  const cards = (await getCollection('cards')).sort((a, b) => a.data.order - b.data.order);
 
-	return [...pages, ...cards].map((entry) => ({
-		params: { slug: entry.id },
-		props: {
-			entry,
-			previous: entry.collection === 'cards' ? cards.filter((e) => e.data.order < entry.data.order).at(-1) : undefined,
-			next: entry.collection === 'cards' ? cards.find((e) => e.data.order > entry.data.order) : undefined,
-		},
-	}));
+  return [...pages, ...cards].map((entry) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      previous: entry.collection === 'cards' ? cards.filter((e) => e.data.order < entry.data.order).at(-1) : undefined,
+      next: entry.collection === 'cards' ? cards.find((e) => e.data.order > entry.data.order) : undefined,
+    },
+  }));
 }
 
 const { entry, previous, next } = Astro.props;
@@ -24,14 +24,14 @@ const Layout = PagesLayout;
 ---
 
 <Layout>
-	<h1>{entry.data.title}</h1>
-	<Content />
-	{
-		entry.collection === 'cards' && (
-			<PageNav
-				previous={{ href: previous ? `${base}${previous.id}/` : base, label: previous ? previous.data.title : 'Home' }}
-				next={{ href: next ? `${base}${next.id}/` : base, label: next ? next.data.title : 'Home' }}
-			/>
-		)
-	}
+  <h1>{entry.data.title}</h1>
+  <Content />
+  {
+    entry.collection === 'cards' && (
+      <PageNav
+        previous={{ href: previous ? `${base}${previous.id}/` : base, label: previous ? previous.data.title : 'Home' }}
+        next={{ href: next ? `${base}${next.id}/` : base, label: next ? next.data.title : 'Home' }}
+      />
+    )
+  }
 </Layout>

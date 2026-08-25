@@ -1,0 +1,16 @@
+name: No tabs
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  no-tabs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check for tabs
+        run: ./scripts/no-tabs.sh
