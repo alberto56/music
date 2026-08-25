@@ -17,4 +17,11 @@ const cards = defineCollection({
   }),
 });
 
-export const collections = { pages, cards };
+const components = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/components' }),
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+export const collections = { pages, cards, components };
