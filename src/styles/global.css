@@ -84,12 +84,21 @@ a:hover {
       close
     );
   }
-  70%  {
+  60%  {
     clip-path: shape(
       from 0% 45%,
       curve to 100% 45% with 50% 70%,
       line to 100% 55%,
       curve to 0% 55% with 50% 80%,
+      close
+    );
+  }
+  65% {
+    clip-path: shape(
+      from 0% 45%,
+      curve to 100% 45% with 50% 45%,
+      line to 100% 55%,
+      curve to 0% 55% with 50% 55%,
       close
     );
   }
