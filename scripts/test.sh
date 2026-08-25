@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 ./scripts/broken-links.sh
 ./scripts/end-to-end-tests.sh
 ./scripts/no-tabs.sh

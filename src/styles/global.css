@@ -116,3 +116,8 @@ a:hover {
 .vibrate {
   animation: pluck 0.8s ease-out;
 }
+
+pre {
+  padding: 40px;
+  border-radius: 13px;
+}

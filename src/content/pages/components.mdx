@@ -12,7 +12,7 @@ export const components = (await getCollection('components'))
 <ul>
   {components.map((page) => (
     <li>
-      <a href={`${base}${page.id}/`}>{page.data.title}</a>
+      <a href={`${base}components/${page.id}/`}>{page.data.title}</a>
     </li>
   ))}
 </ul>
