@@ -18,9 +18,11 @@ import Favicon from '../components/Favicon.astro';
 	</head>
 	<body>
 		<Header />
-		<div class="my-internal">
-			<slot />
-		</div>
+		<main>
+			<div class="my-internal">
+				<slot />
+			</div>
+		</main>
 		<Footer />
 	</body>
 </html>
@@ -29,11 +31,15 @@ import Favicon from '../components/Favicon.astro';
 	html,
 	body {
 		margin: 0;
-		padding: 0;
-		width: 100%;
-		min-height: 100%;
+		min-height: 100dvh; /* fallback to 100vh if dvh isn't supported */
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
 		background: #BAC8B1;
 		color: #5A322A;
+	}
+	main {
+		flex-grow: 1;
 	}
 	.my-internal {
 		max-width: 40rem;
