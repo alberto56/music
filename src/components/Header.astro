@@ -26,7 +26,6 @@ interface Props {}
         <li><a href="/music/" class="nav-link">Home</a></li>
         <li><a href="/music/about/" class="nav-link">About</a></li>
         <li><a href="https://github.com/alberto56/music" class="nav-link"> GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/albertalbala/" class="nav-link">Contact</a></li>
       </ul>
     </nav>
   </div>
@@ -45,6 +44,7 @@ body {
 
 /* --- Header Layout --- */
 .site-header {
+  position: relative;
   top: 0;
   z-index: 1000;
   background-color: #5a322a;
@@ -67,8 +67,14 @@ body {
   text-decoration: none;
 }
 
+@media (min-width: 768px) {
+  .nav-list {
+    background-color: transparent;
+  }
+}
 /* --- Desktop Navigation --- */
 .nav-list {
+  background-color: #5a322a;
   display: flex;
   list-style: none;
   gap: 30px;
