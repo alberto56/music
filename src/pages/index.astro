@@ -10,14 +10,12 @@ const pages = (await getCollection('pages'))
 ---
 
 <Layout>
-	<main>
-		<p>Here are some concepts about music and musical theory that I find interesting.</p>
-		<div class="my-container">
-			{
-				cards.map((page) => (
-					<a href={`${base}${page.id}/`}>{page.data.title}</a>
-				))
-			}
-		</div>
-	</main>
+	<p>Here are some concepts about music and musical theory that I find interesting.</p>
+	<div class="my-container">
+		{
+			cards.map((page) => (
+				<a href={`${base}${page.id}/`}>{page.data.title}</a>
+			))
+		}
+	</div>
 </Layout>

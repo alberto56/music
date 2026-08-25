@@ -7,7 +7,7 @@ interface Props {
 const { previous, next } = Astro.props;
 ---
 
-<nav class="page-nav">
+<nav class="page-nav" aria-label="Card pagination">
 	<a href={previous.href}>&larr; {previous.label}</a>
 	<a href={next.href}>{next.label} &rarr;</a>
 </nav>

@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PagesLayout from '../layouts/Layout.astro';
-import CardLayout from '../layouts/CardLayout.astro';
 import PageNav from '../components/PageNav.astro';
 
 export async function getStaticPaths() {
@@ -25,16 +24,14 @@ const Layout = PagesLayout;
 ---
 
 <Layout>
-	<main>
-		<h1>{entry.data.title}</h1>
-		<Content />
-		{
-			entry.collection === 'cards' && (
-				<PageNav
-					previous={{ href: previous ? `${base}${previous.id}/` : base, label: previous ? previous.data.title : 'Home' }}
-					next={{ href: next ? `${base}${next.id}/` : base, label: next ? next.data.title : 'Home' }}
-				/>
-			)
-		}
-	</main>
+	<h1>{entry.data.title}</h1>
+	<Content />
+	{
+		entry.collection === 'cards' && (
+			<PageNav
+				previous={{ href: previous ? `${base}${previous.id}/` : base, label: previous ? previous.data.title : 'Home' }}
+				next={{ href: next ? `${base}${next.id}/` : base, label: next ? next.data.title : 'Home' }}
+			/>
+		)
+	}
 </Layout>
