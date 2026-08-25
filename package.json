@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "broken-links": "./scripts/broken-links.sh"
+    "broken-links": "./scripts/broken-links.sh",
+    "test:e2e": "./scripts/end-to-end-tests.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
@@ -21,6 +22,7 @@
     "fsevents@2.3.3": true
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "linkinator": "^8.0.4"
   }
 }
