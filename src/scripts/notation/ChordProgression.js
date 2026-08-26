@@ -29,7 +29,7 @@ class ChordProgression {
     const notes = this._chords
       .map((chord) => `(${chord.join(' ')})/${duration}`)
       .join(', ');
-    return this._hasTrailingRest ? `${notes}, B4/qr` : notes;
+    return this._hasTrailingRest ? `${notes}, B4/q/r` : notes;
   }
 
   _randomChord() {
