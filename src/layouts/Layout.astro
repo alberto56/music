@@ -3,6 +3,12 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Favicon from '../components/Favicon.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Notes on music' } = Astro.props;
 ---
 
 <!doctype html>
@@ -13,7 +19,7 @@ import Favicon from '../components/Favicon.astro';
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
     <meta name="generator" content={Astro.generator} />
-    <title>Notes on music</title>
+    <title>{title}</title>
     <Favicon />
   </head>
   <body>

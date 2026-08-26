@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404">
+  <h1>404</h1>
+  <p>This page wandered off the staff. Here's what it sounds like out there:</p>
+
+  <div id="notation"></div>
+  <button id="play-me" type="button">Play me</button>
+</Layout>
+
+<script>
+  import { Factory } from 'vexflow';
+  import ChordProgression from '../scripts/notation/ChordProgression.js';
+  import DissonantChords from '../scripts/sounds/DissonantChords.js';
+
+  const progression = new ChordProgression().generate();
+
+  const factory = new Factory({
+    renderer: { elementId: 'notation', width: 500, height: 200 },
+  });
+  const score = factory.EasyScore();
+  const system = factory.System();
+
+  system
+    .addStave({
+      voices: [score.voice(score.notes(progression.easyScoreString()))],
+    })
+    .addClef('treble')
+    .addTimeSignature('4/4');
+
+  factory.draw();
+
+  document.getElementById('play-me').addEventListener('click', () => {
+    DissonantChords.instance().play(progression.chords(), progression.beatsPerChord());
+  });
+</script>
