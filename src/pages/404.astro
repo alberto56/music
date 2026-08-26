@@ -1,4 +1,9 @@
 ---
+// The site's 404 page. Rather than a plain "not found" message, it renders a
+// short bar of randomly-generated, mostly-dissonant chords on a musical staff
+// (using VexFlow) and lets the visitor hear what "getting lost" sounds like
+// via a "Play me" button. The chord content itself is regenerated on every
+// page load (see ChordProgression), so no two 404s look or sound the same.
 import Layout from '../layouts/Layout.astro';
 ---
 
@@ -15,11 +20,21 @@ import Layout from '../layouts/Layout.astro';
   import ChordProgression from '../scripts/notation/ChordProgression.js';
   import DissonantChords from '../scripts/sounds/DissonantChords.js';
 
+  // Accent color (reused from the site's existing hover palette, see
+  // global.css) used to flash a chord's notes while it is being played, so
+  // the visitor can visually follow along with the audio.
   const PLAYING_COLOR = '#BC7B6F';
+  // Tempo for both the notation's rhythm and the audio playback. Kept in one
+  // place so the two always stay in sync.
   const SECONDS_PER_BEAT = 0.6;
 
+  // Pick this page load's random chord progression once, up front, so the
+  // same chords are used for both drawing the staff and playing the audio.
   const progression = new ChordProgression().generate();
 
+  // Build the notated bar with VexFlow's EasyScore helper, which turns a
+  // compact text description (e.g. "(C4 E4)/q, (D4 F4)/q") into real
+  // StaveNote objects.
   const factory = new Factory({
     renderer: { elementId: 'notation', width: 500, height: 200 },
   });
@@ -35,15 +50,24 @@ import Layout from '../layouts/Layout.astro';
   factory.draw();
 
   // Grabbing the already-rendered SVG elements (rather than re-invoking
-  // VexFlow's own draw methods) avoids VexFlow appending duplicate note
-  // glyphs to the SVG every time the color is toggled.
+  // VexFlow's own draw methods, e.g. note.setStyle().drawWithStyle()) avoids
+  // a real bug: calling VexFlow's draw methods again does not update a note
+  // in place, it appends a brand new set of glyphs on top of the old ones
+  // every time, silently bloating the SVG. Mutating the existing elements'
+  // CSS fill/stroke directly sidesteps that entirely.
   const noteElements = notes.map((note) => note.getSVGElement());
 
   document.getElementById('play-me').addEventListener('click', () => {
+    // Kick off the Web Audio playback for every real chord (this
+    // intentionally excludes any trailing rest - see ChordProgression).
     DissonantChords.instance().play(progression.chords(), progression.beatsPerChord(), SECONDS_PER_BEAT);
 
     const durationMs = progression.beatsPerChord() * SECONDS_PER_BEAT * 1000;
 
+    // Walk through only the chords (not any trailing rest note, which has no
+    // entry in progression.chords() and is deliberately left untouched/black
+    // and silent), flashing each one's notation to PLAYING_COLOR for the
+    // same window of time its audio is sounding, then reverting it.
     progression.chords().forEach((_, index) => {
       const el = noteElements[index];
       setTimeout(() => {
@@ -51,6 +75,9 @@ import Layout from '../layouts/Layout.astro';
         el.style.stroke = PLAYING_COLOR;
       }, index * durationMs);
       setTimeout(() => {
+        // Resetting to '' (rather than a hardcoded 'black') restores
+        // whatever VexFlow's own default rendering color was, so a
+        // just-played note looks identical to one that was never played.
         el.style.fill = '';
         el.style.stroke = '';
       }, (index + 1) * durationMs);

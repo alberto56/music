@@ -8,6 +8,9 @@ interface Props {
   title?: string;
 }
 
+// Optional per-page <title> override, defaulting to the site-wide title.
+// Used by the 404 page (src/pages/404.astro) to set the tab title to "404"
+// instead of the generic site name.
 const { title = 'Notes on music' } = Astro.props;
 ---
 
