@@ -15,6 +15,10 @@ import Layout from '../layouts/Layout.astro';
   import ChordProgression from '../scripts/notation/ChordProgression.js';
   import DissonantChords from '../scripts/sounds/DissonantChords.js';
 
+  const DEFAULT_COLOR = 'black';
+  const PLAYING_COLOR = '#BC7B6F';
+  const SECONDS_PER_BEAT = 0.6;
+
   const progression = new ChordProgression().generate();
 
   const factory = new Factory({
@@ -22,17 +26,28 @@ import Layout from '../layouts/Layout.astro';
   });
   const score = factory.EasyScore();
   const system = factory.System();
+  const notes = score.notes(progression.easyScoreString());
 
   system
-    .addStave({
-      voices: [score.voice(score.notes(progression.easyScoreString()))],
-    })
+    .addStave({ voices: [score.voice(notes)] })
     .addClef('treble')
     .addTimeSignature('4/4');
 
   factory.draw();
 
   document.getElementById('play-me').addEventListener('click', () => {
-    DissonantChords.instance().play(progression.chords(), progression.beatsPerChord());
+    DissonantChords.instance().play(progression.chords(), progression.beatsPerChord(), SECONDS_PER_BEAT);
+
+    const durationMs = progression.beatsPerChord() * SECONDS_PER_BEAT * 1000;
+
+    progression.chords().forEach((_, index) => {
+      const note = notes[index];
+      setTimeout(() => {
+        note.setStyle({ fillStyle: PLAYING_COLOR, strokeStyle: PLAYING_COLOR }).drawWithStyle();
+      }, index * durationMs);
+      setTimeout(() => {
+        note.setStyle({ fillStyle: DEFAULT_COLOR, strokeStyle: DEFAULT_COLOR }).drawWithStyle();
+      }, (index + 1) * durationMs);
+    });
   });
 </script>
