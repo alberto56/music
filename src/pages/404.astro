@@ -57,7 +57,20 @@ import Layout from '../layouts/Layout.astro';
   // CSS fill/stroke directly sidesteps that entirely.
   const noteElements = notes.map((note) => note.getSVGElement());
 
-  document.getElementById('play-me').addEventListener('click', () => {
+  const playButton = document.getElementById('play-me');
+  // Guards against overlapping playback: without this, rapidly re-clicking
+  // "Play me" would start a second (third, fourth, ...) full progression on
+  // top of the one still sounding/animating, since nothing was otherwise
+  // stopping a new click from scheduling its own audio and setTimeouts.
+  let isPlaying = false;
+
+  playButton.addEventListener('click', () => {
+    if (isPlaying) {
+      return;
+    }
+    isPlaying = true;
+    playButton.disabled = true;
+
     // Kick off the Web Audio playback for every real chord (this
     // intentionally excludes any trailing rest - see ChordProgression).
     DissonantChords.instance().play(progression.chords(), progression.beatsPerChord(), SECONDS_PER_BEAT);
@@ -82,5 +95,13 @@ import Layout from '../layouts/Layout.astro';
         el.style.stroke = '';
       }, (index + 1) * durationMs);
     });
+
+    // The whole bar (including any trailing rest) has finished sounding
+    // once we're durationMs past the last chord's start, so re-enable the
+    // button exactly then rather than tracking each chord separately.
+    setTimeout(() => {
+      isPlaying = false;
+      playButton.disabled = false;
+    }, progression.chords().length * durationMs);
   });
 </script>
