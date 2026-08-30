@@ -4,13 +4,22 @@
 const {
   chords = 'random',
 } = Astro.props;
+
+// Astro dedupes this component's client <script> below to a single copy per
+// page, so it only ever runs once even when <Notation /> is used multiple
+// times - it can't rely on hardcoded ids to find "its" elements. Instead,
+// each instance gets a unique id here (at render time, when this frontmatter
+// genuinely does run once per usage) and the shared script loops over every
+// instance's markup by class name.
+const uid = crypto.randomUUID();
 ---
 
-<div id="notation" data-chords={chords}></div>
-<button id="play-me" type="button">Play me</button>
+<div class="notation-instance" data-chords={JSON.stringify(chords)}>
+  <div class="notation" id={`notation-${uid}`}></div>
+  <button class="play-me" type="button">Play me</button>
+</div>
 
 <script>
-  const chords = document.getElementById('notation').dataset.chords;
   import { Factory } from 'vexflow';
   import ChordProgression from '../scripts/notation/ChordProgression.js';
   import DissonantChords from '../scripts/sounds/DissonantChords.js';
@@ -23,80 +32,87 @@ const {
   // place so the two always stay in sync.
   const SECONDS_PER_BEAT = 0.6;
 
-  // Pick this page load's random chord progression once, up front, so the
-  // same chords are used for both drawing the staff and playing the audio.
-  const progression = new ChordProgression().generate(chords);
+  // This script is deduped to a single copy per page (see above), so it
+  // must set up every <Notation /> instance present, not just one.
+  document.querySelectorAll('.notation-instance').forEach((instance) => {
+    const chords = JSON.parse(instance.dataset.chords);
+    const notationEl = instance.querySelector('.notation');
+    const playButton = instance.querySelector('.play-me');
 
-  // Build the notated bar with VexFlow's EasyScore helper, which turns a
-  // compact text description (e.g. "(C4 E4)/q, (D4 F4)/q") into real
-  // StaveNote objects.
-  const factory = new Factory({
-    renderer: { elementId: 'notation', width: 500, height: 200 },
-  });
-  const score = factory.EasyScore();
-  const system = factory.System();
-  const notes = score.notes(progression.easyScoreString());
+    // Pick this instance's random chord progression once, up front, so the
+    // same chords are used for both drawing the staff and playing the audio.
+    const progression = new ChordProgression().generate(chords);
 
-  system
-    .addStave({ voices: [score.voice(notes)] })
-    .addClef('treble')
-    .addTimeSignature('4/4');
-
-  factory.draw();
-
-  // Grabbing the already-rendered SVG elements (rather than re-invoking
-  // VexFlow's own draw methods, e.g. note.setStyle().drawWithStyle()) avoids
-  // a real bug: calling VexFlow's draw methods again does not update a note
-  // in place, it appends a brand new set of glyphs on top of the old ones
-  // every time, silently bloating the SVG. Mutating the existing elements'
-  // CSS fill/stroke directly sidesteps that entirely.
-  const noteElements = notes.map((note) => note.getSVGElement());
-
-  const playButton = document.getElementById('play-me');
-  // Guards against overlapping playback: without this, rapidly re-clicking
-  // "Play me" would start a second (third, fourth, ...) full progression on
-  // top of the one still sounding/animating, since nothing was otherwise
-  // stopping a new click from scheduling its own audio and setTimeouts.
-  let isPlaying = false;
-
-  playButton.addEventListener('click', () => {
-    if (isPlaying) {
-      return;
-    }
-    isPlaying = true;
-    playButton.disabled = true;
-
-    // Kick off the Web Audio playback for every real chord (this
-    // intentionally excludes any trailing rest - see ChordProgression).
-    DissonantChords.instance().play(progression.chords(), progression.beatsPerChord(), SECONDS_PER_BEAT);
-
-    const durationMs = progression.beatsPerChord() * SECONDS_PER_BEAT * 1000;
-
-    // Walk through only the chords (not any trailing rest note, which has no
-    // entry in progression.chords() and is deliberately left untouched/black
-    // and silent), flashing each one's notation to PLAYING_COLOR for the
-    // same window of time its audio is sounding, then reverting it.
-    progression.chords().forEach((_, index) => {
-      const el = noteElements[index];
-      setTimeout(() => {
-        el.style.fill = PLAYING_COLOR;
-        el.style.stroke = PLAYING_COLOR;
-      }, index * durationMs);
-      setTimeout(() => {
-        // Resetting to '' (rather than a hardcoded 'black') restores
-        // whatever VexFlow's own default rendering color was, so a
-        // just-played note looks identical to one that was never played.
-        el.style.fill = '';
-        el.style.stroke = '';
-      }, (index + 1) * durationMs);
+    // Build the notated bar with VexFlow's EasyScore helper, which turns a
+    // compact text description (e.g. "(C4 E4)/q, (D4 F4)/q") into real
+    // StaveNote objects.
+    const factory = new Factory({
+      renderer: { elementId: notationEl.id, width: 500, height: 200 },
     });
+    const score = factory.EasyScore();
+    const system = factory.System();
+    const notes = score.notes(progression.easyScoreString());
 
-    // The whole bar (including any trailing rest) has finished sounding
-    // once we're durationMs past the last chord's start, so re-enable the
-    // button exactly then rather than tracking each chord separately.
-    setTimeout(() => {
-      isPlaying = false;
-      playButton.disabled = false;
-    }, progression.chords().length * durationMs);
+    system
+      .addStave({ voices: [score.voice(notes)] })
+      .addClef('treble')
+      .addTimeSignature('4/4');
+
+    factory.draw();
+
+    // Grabbing the already-rendered SVG elements (rather than re-invoking
+    // VexFlow's own draw methods, e.g. note.setStyle().drawWithStyle()) avoids
+    // a real bug: calling VexFlow's draw methods again does not update a note
+    // in place, it appends a brand new set of glyphs on top of the old ones
+    // every time, silently bloating the SVG. Mutating the existing elements'
+    // CSS fill/stroke directly sidesteps that entirely.
+    const noteElements = notes.map((note) => note.getSVGElement());
+
+    // Guards against overlapping playback: without this, rapidly re-clicking
+    // "Play me" would start a second (third, fourth, ...) full progression on
+    // top of the one still sounding/animating, since nothing was otherwise
+    // stopping a new click from scheduling its own audio and setTimeouts.
+    let isPlaying = false;
+
+    playButton.addEventListener('click', () => {
+      if (isPlaying) {
+        return;
+      }
+      isPlaying = true;
+      playButton.disabled = true;
+
+      // Kick off the Web Audio playback for every real chord (this
+      // intentionally excludes any trailing rest - see ChordProgression).
+      DissonantChords.instance().play(progression.chords(), progression.beatsPerChord(), SECONDS_PER_BEAT);
+
+      const durationMs = progression.beatsPerChord() * SECONDS_PER_BEAT * 1000;
+
+      // Walk through only the chords (not any trailing rest note, which has no
+      // entry in progression.chords() and is deliberately left untouched/black
+      // and silent), flashing each one's notation to PLAYING_COLOR for the
+      // same window of time its audio is sounding, then reverting it.
+      progression.chords().forEach((_, index) => {
+        const el = noteElements[index];
+        setTimeout(() => {
+          el.style.fill = PLAYING_COLOR;
+          el.style.stroke = PLAYING_COLOR;
+        }, index * durationMs);
+        setTimeout(() => {
+          // Resetting to '' (rather than a hardcoded 'black') restores
+          // whatever VexFlow's own default rendering color was, so a
+          // just-played note looks identical to one that was never played.
+          el.style.fill = '';
+          el.style.stroke = '';
+        }, (index + 1) * durationMs);
+      });
+
+      // The whole bar (including any trailing rest) has finished sounding
+      // once we're durationMs past the last chord's start, so re-enable the
+      // button exactly then rather than tracking each chord separately.
+      setTimeout(() => {
+        isPlaying = false;
+        playButton.disabled = false;
+      }, progression.chords().length * durationMs);
+    });
   });
 </script>

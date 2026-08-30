@@ -25,15 +25,24 @@ class ChordProgression {
    *   Example: random, or ["C4 E4 G4", "D4 F4 A4"]
    */
   generate(chords = 'random') {
-    const chordCount = this._randomInt(this._minChords, this._maxChords);
     if (chords == 'random') {
+      const chordCount = this._randomInt(this._minChords, this._maxChords);
       this._chords = Array.from({ length: chordCount }, () => this._randomChord());
-      console.log('a', this._chords);
     }
     else {
-      this._chords = chords;
-      console.log('b', this._chords);
+      // Custom chords are documented (see Notation.astro) as an array of
+      // space-separated pitch strings, e.g. "C4 E4 G4", but every downstream
+      // consumer (easyScoreString below, DissonantChords#play) expects the
+      // same array-of-pitch-strings shape _randomChord() produces - so
+      // normalize here, once, rather than in each consumer.
+      this._chords = chords.map((chord) => Array.isArray(chord) ? chord : chord.split(' '));
     }
+    // The duration math below must be driven by how many chords actually
+    // ended up in this._chords (whether randomly generated or custom),
+    // NOT a fresh random roll - using an unrelated random count here would
+    // make the beat math (and therefore the notated bar) not match the
+    // actual chords, which VexFlow rejects as an incomplete voice.
+    const chordCount = this._chords.length;
     // Fitting 2, 3, or 4 chords evenly into one 4/4 (4-beat) bar:
     //   - 2 chords -> 2 beats each (half notes), fills the bar exactly.
     //   - 4 chords -> 1 beat each (quarter notes), also fills it exactly.
