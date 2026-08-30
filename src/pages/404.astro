@@ -1,0 +1,15 @@
+---
+// The site's 404 page. Rather than a plain "not found" message, it renders a
+// short bar of randomly-generated, mostly-dissonant chords on a musical staff
+// (using VexFlow) and lets the visitor hear what "getting lost" sounds like
+// via a "Play me" button. The chord content itself is regenerated on every
+// page load (see ChordProgression), so no two 404s look or sound the same.
+import Layout from '../layouts/Layout.astro';
+import Notation from '../components/Notation.astro';
+---
+
+<Layout title="404">
+  <h1>404</h1>
+  <p>Not found</p>
+  <Notation chords="random"/>
+</Layout>
