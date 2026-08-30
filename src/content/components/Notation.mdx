@@ -1,0 +1,40 @@
+---
+title: "Notation"
+---
+
+import Notation from '../../components/Notation.astro';
+
+Notation can be added to any page using this code:
+
+```
+import Notation from '../../components/Notation.astro';
+...
+<Notation />
+```
+
+And will show the notation like this:
+
+<Notation />
+<Notation />
+
+Note that by default, the chords are random, so:
+
+```
+<Notation />
+```
+
+is equivalent to
+
+```
+<Notation chords="random"/>
+```
+
+You can also define your chord like this:
+
+```
+<Notation chords={["C4 E4 G4", "D4 F4 A4"]}/>
+```
+
+which gives:
+
+<Notation chords={["C4 E4 G4", "D4 F4 A4"]}/>

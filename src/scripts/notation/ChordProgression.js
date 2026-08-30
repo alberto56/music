@@ -19,9 +19,21 @@ class ChordProgression {
     this._notesPerChord = notesPerChord;
   }
 
-  generate() {
+  /**
+   *
+   * @param {String} chords
+   *   Example: random, or ["C4 E4 G4", "D4 F4 A4"]
+   */
+  generate(chords = 'random') {
     const chordCount = this._randomInt(this._minChords, this._maxChords);
-    this._chords = Array.from({ length: chordCount }, () => this._randomChord());
+    if (chords == 'random') {
+      this._chords = Array.from({ length: chordCount }, () => this._randomChord());
+      console.log('a', this._chords);
+    }
+    else {
+      this._chords = chords;
+      console.log('b', this._chords);
+    }
     // Fitting 2, 3, or 4 chords evenly into one 4/4 (4-beat) bar:
     //   - 2 chords -> 2 beats each (half notes), fills the bar exactly.
     //   - 4 chords -> 1 beat each (quarter notes), also fills it exactly.
@@ -66,12 +78,16 @@ class ChordProgression {
   // e.g. "C#4"). Using a Set and looping until it reaches the target size
   // guarantees no duplicate pitch ever lands in the same chord, however
   // unlikely, without needing any special retry/backoff logic.
+  // {@returns Array<string>} An array of distinct pitch strings representing
+  // the chord. For example, ["C#4", "E4", "G4"].
   _randomChord() {
     const pitches = new Set();
     while (pitches.size < this._notesPerChord) {
       pitches.add(this._randomPitch());
     }
-    return Array.from(pitches);
+    const ret = Array.from(pitches);
+    console.log(ret);
+    return ret;
   }
 
   _randomPitch() {
